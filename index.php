@@ -1,10 +1,5 @@
 <?php
 	include 'connections/db_connect.php' ;
-	include_once "objects/product.php";
-	include_once "objects/product_image.php";
-	$_SESSION['cart']=isset($_SESSION['cart']) ? $_SESSION['cart'] : array();
-	// to prevent undefined index notice
-	$action = isset($_GET['action']) ? $_GET['action'] : "";
 ?>
 
 <!DOCTYPE html>
@@ -51,144 +46,6 @@
 </head>
 <body class="animsition">
 
-	<!-- header fixed -->
-	<div class="wrap_header fixed-header2 trans-0-4">
-		<!-- Logo -->
-		<a href="index.php" class="logo">
-			<img src="images/icons/logo.png" alt="IMG-LOGO">
-		</a>
-
-
-		<!-- Menu -->
-		<div class="wrap_menu">
-			<nav class="menu">
-				<ul class="main_menu">
-					<li>
-						<a href="index.php">Home</a>
-					</li>
-
-					<!----Sale is how it works--->
-					<li class="sale-noti">
-						<a href="renting.php">How Rent Works</a>
-					</li>
-
-					<li>
-						<a href="products.php">Shop</a>
-					</li>
-
-					<li>
-						<a href="cart.php">Cart</a>
-					</li>
-
-					<li>
-						<a href="blog.php">Blog</a>
-					</li>
-
-					<li>
-						<a href="about.php">About</a>
-					</li>
-
-					<li>
-						<a href="contact.php">Contact</a>
-					</li>
-				</ul>
-			</nav>
-		</div>
-
-		<!-- Header Icon -->
-		<div class="header-icons">
-			<a href="#" class="header-wrapicon1 dis-block">
-				<img src="images/icons/icon-header-01.png" class="header-icon1" alt="ICON">
-			</a>
-
-			<span class="linedivide1"></span>
-
-			<div class="header-wrapicon2">
-				<img src="images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown" alt="Cart">
-				<span class="header-icons-noti">
-				<?php
-                // count products in cart
-                $cart_count=count($_SESSION['cart']);
-				echo $cart_count;
-                ?>
-				</span>
-
-				<!-- Header cart noti -->
-				<div class="header-cart header-dropdown">
-					<ul class="header-cart-wrapitem">
-						<li class="header-cart-item">
-							<div class="header-cart-item-img">
-								<img src="images/item-cart-01.jpg" alt="IMG">
-							</div>
-
-							<div class="header-cart-item-txt">
-								<a href="#" class="header-cart-item-name">
-									White Shirt With Pleat Detail Back
-								</a>
-
-								<span class="header-cart-item-info">
-									1 x $19.00
-								</span>
-							</div>
-						</li>
-
-						<li class="header-cart-item">
-							<div class="header-cart-item-img">
-								<img src="images/item-cart-02.jpg" alt="IMG">
-							</div>
-
-							<div class="header-cart-item-txt">
-								<a href="#" class="header-cart-item-name">
-									Converse All Star Hi Black Canvas
-								</a>
-
-								<span class="header-cart-item-info">
-									1 x  ₹39.00
-								</span>
-							</div>
-						</li>
-
-						<li class="header-cart-item">
-							<div class="header-cart-item-img">
-								<img src="images/item-cart-03.jpg" alt="IMG">
-							</div>
-
-							<div class="header-cart-item-txt">
-								<a href="#" class="header-cart-item-name">
-									Nixon Porter Leather Watch In Tan
-								</a>
-
-								<span class="header-cart-item-info">
-									1 x  ₹17.00
-								</span>
-							</div>
-						</li>
-					</ul>
-
-					<div class="header-cart-total">
-						Total:  ₹75.00
-					</div>
-
-					<div class="header-cart-buttons">
-						<div class="header-cart-wrapbtn">
-							<!-- Button -->
-							<a href="cart.php" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
-								View Cart
-							</a>
-						</div>
-
-						<div class="header-cart-wrapbtn">
-							<!-- Button -->
-							<a href="#" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
-								Check Out
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
 	<!-- top noti -->
 	<div class="flex-c-m size22 bg0 s-text21 pos-relative">
 		Cash On Delivery Available
@@ -229,70 +86,63 @@
 					</div>
 
 					<!--  -->
-					<a href="#" class="header-wrapicon1 dis-block m-l-30">
-						<img src="images/icons/icon-header-01.png" class="header-icon1" alt="ICON">
-					</a>
+
 
 					<span class="linedivide1"></span>
 
-					<div class="header-wrapicon2 m-r-13">
-						<img src="images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
-						<span class="header-icons-noti">0</span>
+					<div class="header-wrapicon2 m-r-13" onclick="show_cart();" >
+						<img src="images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown" alt="ICON" onclick="show_cart();">
+						<span class="header-icons-noti">
+						<?php
+						if(isset($_SESSION['id']) ){
+						$count = count($_SESSION['id']);
+						}else{	$count = 0;
+						}
+						echo $count;
+						?>
+						</span>
 
 						<!-- Header cart noti -->
-						<div class="header-cart header-dropdown">
+						<div id="mycartmob" class="header-cart header-dropdown">
 							<ul class="header-cart-wrapitem">
-								<li class="header-cart-item">
-									<div class="header-cart-item-img">
-										<img src="images/item-cart-01.jpg" alt="IMG">
-									</div>
 
+							
+<?php						
+							if($count == 0){
+								echo '
+									<!-- Button -->
+									<a href="products.php" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4" style="background-color:#e65540">
+										Start Shopping
+									</a>
+								';
+							}
+							for($i=0;$i < $count ;$i++)
+							{	?>	
+								<li class="header-cart-item">
 									<div class="header-cart-item-txt">
-										<a href="#" class="header-cart-item-name">
-											White Shirt With Pleat Detail Back
+										<a href="products?id=<?php echo $_SESSION['id'][$i]; ?>" class="header-cart-item-name">
+										<?php echo $_SESSION['name'][$i]; ?>
+										<!--PHP CODE-->
 										</a>
 
 										<span class="header-cart-item-info">
-											1 x  ₹19.00
+										₹<?php echo $rent = intval(preg_replace('/[^0-9]+/', '', $_SESSION['rent'][$i]), 10); ?>
+										₹<?php echo $deposit = intval(preg_replace('/[^0-9]+/', '', $_SESSION['deposit'][$i]), 10); 
+										if(! isset($totalcart) ){
+										$totalcart = 0;	
+										}
+										$totalcart = $totalcart + $rent + $deposit;
+										?>	
+										<!--PHP CODE-->
+										
 										</span>
 									</div>
 								</li>
-
-								<li class="header-cart-item">
-									<div class="header-cart-item-img">
-										<img src="images/item-cart-02.jpg" alt="IMG">
-									</div>
-
-									<div class="header-cart-item-txt">
-										<a href="#" class="header-cart-item-name">
-											Converse All Star Hi Black Canvas
-										</a>
-
-										<span class="header-cart-item-info">
-											1 x  ₹39.00
-										</span>
-									</div>
-								</li>
-
-								<li class="header-cart-item">
-									<div class="header-cart-item-img">
-										<img src="images/item-cart-03.jpg" alt="IMG">
-									</div>
-
-									<div class="header-cart-item-txt">
-										<a href="#" class="header-cart-item-name">
-											Nixon Porter Leather Watch In Tan
-										</a>
-
-										<span class="header-cart-item-info">
-											1 x  ₹17.00
-										</span>
-									</div>
-								</li>
+						<?php } ?>
 							</ul>
 
 							<div class="header-cart-total">
-								Total:  ₹75.00
+								Total: ₹<?php echo $totalcart? $totalcart : 0 ; ?>
 							</div>
 
 							<div class="header-cart-buttons">
@@ -370,38 +220,62 @@
 			<div class="btn-show-menu">
 				<!-- Header Icon mobile -->
 				<div class="header-icons-mobile">
-					<a href="#" class="header-wrapicon1 dis-block">
-						<img src="images/icons/icon-header-01.png" class="header-icon1" alt="ICON">
-					</a>
 
 					<span class="linedivide2"></span>
 
-					<div class="header-wrapicon2">
+					<div class="header-wrapicon2" onclick="show_cart();" >
 						<img src="images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
-						<span class="header-icons-noti">0</span>
+						<span class="header-icons-noti">
+						<?php
+						if(isset($_SESSION['id']) ){
+						$count = count($_SESSION['id']);
+						}else{	$count = 0;
+						}
+						echo $count;
+						?>
+						</span>
 
 						<!-- Header cart noti -->
-						<div class="header-cart header-dropdown">
+						<div id="mycart" class="header-cart header-dropdown">
 							<ul class="header-cart-wrapitem">
-								<li class="header-cart-item">
-									<div class="header-cart-item-img">
-										<img src="images/item-cart-01.jpg" alt="IMG">
-									</div>
 
+							
+<?php						
+							if($count == 0){
+								echo '
+									<!-- Button -->
+									<a href="products.php" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4" style="background-color:#e65540">
+										Start Shopping
+									</a>
+								';
+							}
+							for($i=0;$i < $count ;$i++)
+							{	?>	
+								<li class="header-cart-item">
 									<div class="header-cart-item-txt">
-										<a href="#" class="header-cart-item-name">
-											White Shirt With Pleat Detail Back
+										<a href="products?id=<?php echo $_SESSION['id'][$i]; ?>" class="header-cart-item-name">
+										<?php echo $_SESSION['name'][$i]; ?>
+										<!--PHP CODE-->
 										</a>
 
 										<span class="header-cart-item-info">
-											1 x  ₹19.00
+										₹<?php echo $rent = intval(preg_replace('/[^0-9]+/', '', $_SESSION['rent'][$i]), 10); ?>
+										₹<?php echo $deposit = intval(preg_replace('/[^0-9]+/', '', $_SESSION['deposit'][$i]), 10); 
+										if(! isset($totalcart) ){
+										$totalcart = 0;	
+										}
+										$totalcart = $totalcart + $rent + $deposit;
+										?>	
+										<!--PHP CODE-->
+										
 										</span>
 									</div>
 								</li>
+						<?php } ?>
 							</ul>
 
 							<div class="header-cart-total">
-								Total:  ₹190.00
+								Total: ₹<?php echo $totalcart? $totalcart : 0 ; ?>
 							</div>
 
 							<div class="header-cart-buttons">
@@ -414,7 +288,7 @@
 
 								<div class="header-cart-wrapbtn">
 									<!-- Button -->
-									<a href="#" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+									<a href="cart.php" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
 										Check Out
 									</a>
 								</div>
@@ -660,42 +534,7 @@ if ($result_plans->num_rows > 0) {
 					<!-- - -->
 					<div class="tab-pane fade show active" id="best-seller" role="tabpanel">
 						<div class="row">
-						<!--OG Tabs/Product display-->
-							<!--
-							<div class="col-sm-6 col-md-4 col-lg-3 p-b-50">
-								<!-- Block2 -->
-								<!--
-								<div class="block2">
-									<div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
-										<img src="images/item-02.jpg" alt="IMG-PRODUCT">
-
-										<div class="block2-overlay trans-0-4">
-											<a href="#" class="block2-btn-addwishlist hov-pointer trans-0-4">
-												<i class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>
-												<i class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>
-											</a>
-
-											<div class="block2-btn-addcart w-size1 trans-0-4">
-												
-												<button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
-													Add to Cart
-												</button>
-											</div>
-										</div>
-									</div>
-
-									<div class="block2-txt p-t-20">
-										<a href="product-detail.php" class="block2-name dis-block s-text3 p-b-5">
-											Herschel supply co 25l
-										</a>
-
-										<span class="block2-price m-text6 p-r-5">
-											 ₹75.00
-										</span>
-									</div>
-								</div>
-							</div>
-					-->		
+		
 <?php
 /* PRODUCTS BEST SELLER*/
 $sql_products = "SELECT * FROM products LIMIT 15";
@@ -728,15 +567,17 @@ if ($result_products->num_rows > 0) {
 									<span class="block2-id" style="display:none;">
 										<?php echo $row['id'] ?>
 									</span>
-										<a href="product-detail.php" class="block2-name dis-block s-text3 p-b-5">
+										<a href="product-detail.php?id='<?php echo $row['id']; ?>'" class="block2-name dis-block s-text3 p-b-5">
 											<?php echo $row['product_name'] ?>
 										</a>
-										
-										Rent: <span class="block2-price m-text6 p-r-5">
+									<span class="block2-id" style="display:none;">
+										<?php echo $row['id']; ?>
+									</span>
+										Rent: <span class="block2-rent m-text6 p-r-5">
 											₹<?php echo $row['rent'] ?>
 										</span>
 										<br>
-										Deposit: <span class="block2-price m-text6 p-r-5">
+										Deposit: <span class="block2-deposit m-text6 p-r-5">
 											₹<?php echo $row['deposit'] ?>
 										</span>
 									</div>
@@ -795,12 +636,14 @@ if ($result_products->num_rows > 0) {
 										<a href="product-detail.php" class="block2-name dis-block s-text3 p-b-5">
 											<?php echo $row1['product_name']; ?>
 										</a>
-
-										Rent: <span class="block2-price m-text6 p-r-5">
+									<span class="block2-id" style="display:none;">
+										<?php echo $row1['id']; ?>
+									</span>
+										Rent: <span class="block2-rent m-text6 p-r-5">
 											₹<?php echo $row1['rent'] ?>
 										</span>
 										<br>
-										Deposit: <span class="block2-price m-text6 p-r-5">
+										Deposit: <span class="block2-deposit m-text6 p-r-5">
 											₹<?php echo $row1['deposit'] ?>
 										</span>
 									</div>
@@ -1042,31 +885,6 @@ if ($result_blogs->num_rows > 0) {
 	}
 }
 ?>
-<!-- OG OUR BLOG 
-				<div class="col-sm-10 col-md-4 p-b-30 m-l-r-auto">
-					<!-- Block3 -->
-<!--					<div class="block3">
-						<a href="blog-detail.php" class="block3-img dis-block hov-img-zoom">
-							<img src="images/blog-03.jpg" alt="IMG-BLOG">
-						</a>
-
-						<div class="block3-txt p-t-14">
-							<h4 class="p-b-7">
-								<a href="blog-detail.php" class="m-text11">
-									New York SS 2018 Street Style: Annina Mislin
-								</a>
-							</h4>
-
-							<span class="s-text6">By</span> <span class="s-text7">Nancy Ward</span>
-							<span class="s-text6">on</span> <span class="s-text7">July 2, 2017</span>
-
-							<p class="s-text8 p-t-16">
-								Proin nec vehicula lorem, a efficitur ex. Nam vehicula nulla vel erat tincidunt, sed hendrerit ligula porttitor. Fusce sit amet maximus nunc
-							</p>
-						</div>
-					</div>
-				</div>
--->
 			</div>
 		</div>
 	</section>
@@ -1161,13 +979,48 @@ if ($result_blogs->num_rows > 0) {
 <!--===============================================================================================-->
 	<script type="text/javascript" src="vendor/sweetalert/sweetalert.min.js"></script>
 	<script type="text/javascript">
+    function show_cart()
+    {
+	
+      $.ajax({
+      type:'post',
+      url:'store_items.php',
+      data:{
+        showcart:"cart"
+      },
+      success:function(response) {
+        document.getElementById("mycart").innerHTML=response;
+        document.getElementById("mycartmob").innerHTML=response;
+        
+      }
+     });
+
+    }
+
 		$('.block2-btn-addcart').each(function(){
-			var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
+			var name = $(this).parent().parent().parent().find('.block2-name').html();
 			var idProduct = $(this).parent().parent().parent().find('.block2-id').html();
-			/*fetched ID of Product*/
+			var rentProduct = $(this).parent().parent().parent().find('.block2-rent').html();
+			var depositProduct = $(this).parent().parent().parent().find('.block2-deposit').html();
 			$(this).on('click', function(){
-				
-				swal(nameProduct, "is added to cart !", "success");
+				swal(name, "is added to cart !", "success");
+		
+			$.ajax({
+			type:'post',
+			url:'store_items.php',
+			data:{
+			item_name:name,
+			item_rent:rentProduct,
+			item_deposit:depositProduct,
+			item_id:idProduct
+			},
+			success:function(response) {
+			document.getElementById("total_items").innerHTML=response;
+			document.getElementById("total_items_mobile").innerHTML=response;
+			
+			}
+			});
+	  
 			});
 		});
 

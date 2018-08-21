@@ -78,7 +78,13 @@ include_once 'connections/db_connect.php' ;
 								₹<?php echo $deposit = intval(preg_replace('/[^0-9]+/', '', $_SESSION['deposit'][$i]), 10); ?>
 							</td>
 							<td class="column-5">
-								₹<?php echo $total = $rent + $deposit ; ?>
+							
+								₹<?php 
+								if(! isset($totalcart) ){
+										$totalcart = 0;	
+								}
+								$totalcart = $totalcart + $rent + $deposit;
+								echo $total = $rent + $deposit ; ?>
 							</td>
 						</tr>
 
@@ -116,7 +122,7 @@ include_once 'connections/db_connect.php' ;
 					</span>
 
 					<span class="m-text21 w-size20 w-full-sm">
-						₹<?php echo $total; ?>
+						₹<?php echo $totalcart; ?>
 					</span>
 				</div>
 
@@ -166,7 +172,7 @@ include_once 'connections/db_connect.php' ;
 					</span>
 
 					<span class="m-text21 w-size20 w-full-sm">
-						₹<?php echo $total; ?>
+						₹<?php echo $totalcart; ?>
 					</span>
 				</div>
 

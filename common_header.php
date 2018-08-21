@@ -107,14 +107,20 @@
 								<li class="header-cart-item">
 									<div class="header-cart-item-txt">
 										<a href="products?id=<?php echo $_SESSION['id'][$i]; ?>" class="header-cart-item-name">
-											<?php echo $_SESSION['name'][$i]; ?>
-											<!--PHP CODE-->
+										<?php echo $_SESSION['name'][$i]; ?>
+										<!--PHP CODE-->
 										</a>
 
 										<span class="header-cart-item-info">
-											<?php echo $_SESSION['rent'][$i]; ?>
-											<?php echo $_SESSION['deposit'][$i]; ?>
-											<!--PHP CODE-->
+										₹<?php echo $rent = intval(preg_replace('/[^0-9]+/', '', $_SESSION['rent'][$i]), 10); ?>
+										₹<?php echo $deposit = intval(preg_replace('/[^0-9]+/', '', $_SESSION['deposit'][$i]), 10); 
+										if(! isset($totalcart) ){
+										$totalcart = 0;	
+										}
+										$totalcart = $totalcart + $rent + $deposit;
+										?>	
+										<!--PHP CODE-->
+										
 										</span>
 									</div>
 								</li>
@@ -122,7 +128,7 @@
 							</ul>
 
 							<div class="header-cart-total">
-								<!-- CALC IT Total:  ₹36.00-->
+								Total: ₹<?php echo $totalcart? $totalcart : 0 ; ?>
 							</div>
 
 							<div class="header-cart-buttons">
@@ -135,7 +141,7 @@
 
 								<div class="header-cart-wrapbtn">
 									<!-- Button -->
-									<a href="#" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+									<a href="cart.php" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
 										Check Out
 									</a>
 								</div>
@@ -192,19 +198,22 @@
 							for($i=0;$i < $count ;$i++)
 							{	?>	
 								<li class="header-cart-item">
-
 									<div class="header-cart-item-txt">
-										<a href="product-detail.php?id=<?php echo $_SESSION['id'][$i]; ?>" class="header-cart-item-name">
-											<?php echo $_SESSION['name'][$i]; ?>
-											<!--PHP CODE-->
+										<a href="products?id=<?php echo $_SESSION['id'][$i]; ?>" class="header-cart-item-name">
+										<?php echo $_SESSION['name'][$i]; ?>
+										<!--PHP CODE-->
 										</a>
 
 										<span class="header-cart-item-info">
-											<?php echo $_SESSION['rent'][$i]; ?>
-											<?php echo $_SESSION['deposit'][$i]; ?>
-											<!--PHP CODE-->
-											
-
+										₹<?php echo $rent = intval(preg_replace('/[^0-9]+/', '', $_SESSION['rent'][$i]), 10); ?>
+										₹<?php echo $deposit = intval(preg_replace('/[^0-9]+/', '', $_SESSION['deposit'][$i]), 10); 
+										if(! isset($totalcart) ){
+										$totalcart = 0;	
+										}
+										$totalcart = $totalcart + $rent + $deposit;
+										?>	
+										<!--PHP CODE-->
+										
 										</span>
 									</div>
 								</li>
@@ -212,7 +221,7 @@
 							</ul>
 
 							<div class="header-cart-total">
-								<!-- CALC IT Total:  ₹36.00-->
+								Total: ₹<?php echo $totalcart? $totalcart : 0 ; ?>
 							</div>
 
 							<div class="header-cart-buttons">
@@ -225,7 +234,7 @@
 
 								<div class="header-cart-wrapbtn">
 									<!-- Button -->
-									<a href="#" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+									<a href="cart.php" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
 										Check Out
 									</a>
 								</div>

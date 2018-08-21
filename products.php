@@ -247,12 +247,6 @@ else{
     for (; $i <= $pages; $i++) {
 		echo "<a class='item-pagination flex-c-m trans-0-4' href='?page=".$i."'> $i </a>";
 		}
-		// for pagination purposes
-$page = isset($_GET['page']) ? $_GET['page'] : 1; // page is the current page, if there's nothing set, default is page 1
-$records_per_page = 6; // set records or rows of data per page
-$from_record_num = ($records_per_page * $page) - $records_per_page; // calculate for the query LIMIT clause
-include_once "paging.php";
-
 ?>		
 </div>
 <!--pagination end-->			
@@ -281,6 +275,13 @@ include_once "paging.php";
 	<script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
 	<script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/select2/select2.min.js"></script>
+	<script type="text/javascript">
+		$(".selection-1").select2({
+			minimumResultsForSearch: 20,
+			dropdownParent: $('#dropDownSelect1')
+		});
+	</script>
 <!--===============================================================================================-->
 <!--===============================================================================================-->
 	<script type="text/javascript" src="vendor/slick/slick.min.js"></script>
@@ -291,7 +292,7 @@ include_once "paging.php";
 	
     function show_cart()
     {
-	console.log("Show cart called");
+	
       $.ajax({
       type:'post',
       url:'store_items.php',
@@ -327,7 +328,6 @@ include_once "paging.php";
 			success:function(response) {
 			document.getElementById("total_items").innerHTML=response;
 			document.getElementById("total_items_mobile").innerHTML=response;
-			document.getElementById("countt").innerHTML=response;
 			
 			}
 			});
